@@ -1,0 +1,12 @@
+{% extends "basic.html" %}
+{% block body %}
+	<form action="{{ url_for('make_search')}}" method="post" class="search">
+		<dl>
+			<dt>Degree Sequence:</dt>
+			<dd><input type="text" size="30" name="deg_seq"></dd>
+			<dt>Another field</dt>
+			<dd><input type="text" size="30" name="ano_field"></dd>
+			<dd><input type="submit" value="Search!"></dd>
+		</dl>
+	</form>
+{% endblock %}
