@@ -2,11 +2,16 @@
 <head>
 	<title>Graphlopedia</title>
 	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css')}}">
+	{% block scripts %}{% endblock %}
 </head>
 
 <body>
 	<div class="page">
-		<h1>Graphlopedia!</h1>
+		<h1><a href="{{ url_for('index') }}" class="home">Graphlopedia!</a></h1>
+		<hr />
 		{% block body %}{% endblock %}
+		<div id="footer">
+			Contact us at graphletes(at)googlegroups(dot)com
+		</div>
 	</div>
 </body>

@@ -1,0 +1,20 @@
+{% extends "basic.html" %}
+
+{% block scripts%}
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script>
+		var graph = {{ gJSON|tojson }};
+	</script type="text/javascript">
+	<script src="{{ url_for('static', filename='graph.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+	{% if not graph%}
+		<p>No graph like that! You really shouldn't be here...</p>
+	{% endif %}
+		<h2>{{ graph['name'] }}:</h2>
+		<svg class='graph'></svg>
+		<p>testing here: {{ graph['name'] }}</p>
+
+
+{% endblock %}

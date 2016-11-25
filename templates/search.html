@@ -1,0 +1,24 @@
+{% extends "basic.html" %}
+
+{% block body %}
+    <h2>Search Results for {{ query }}</h2>
+	{% if not results %}
+		<p>There are no exact matches.</p>	
+	{% else %}
+		<table class="results">
+			<tr class="header"><td>Name</td><td>Title</td><td>No. Vertices</td></tr>
+			{% for result in results %}
+				<tr><td><a href="{{ url_for('get_graph', gid=result.name) }}">{{ result.name }}</a></td><td>{{ result.title }}</td><td>{{ result.vertices[-1] }}</td></tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+	{% if close_results %}
+		<h2>Close Results for {{ query }}</h2>
+		<table class="results">
+			<tr class="header"><td>Name</td><td>Title</td><td>No. Vertices</td></tr>
+			{% for result in close_results %}
+				<tr><td><a href="{{ url_for('get_graph', gid=result.name) }}">{{ result.name }}</a></td><td>{{ result.title }}</td><td>{{ result.vertices[-1] }}</td></tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+{% endblock %}
