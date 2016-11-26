@@ -1,0 +1,19 @@
+{% extends "basic.html" %}
+
+{% block body %}
+<h2>Admin Page:</h2>
+
+<h3 class="section">Add Graph</h3>
+<form method="post" action="{{ url_for('add_graph') }}">
+	<table class="info">
+		<tr><td class="em">Graph Name</td><td class="norm"><input type="text" name="title" value="graph xyz"></td></tr>
+		<tr><td class="em">Vertices</td><td class="norm"><input type="text" name="vertices" value="[1, 2, ..., n]"></td></tr>
+		<tr><td class="em">Edges</td><td class="norm"><input type="text" name="edges" value="[[x1, y1], [x2, y2], ..., [xn, ym]]"></td></tr>
+		<tr><td class="em">Degree Sequence</td><td class="norm"><input type="text" name="deg_seq" value="[x, y, ..., z]"></td></tr>
+		<tr><td class="em">References</td><td class="norm"><input type="text" name="refs" value="['ref1', 'ref2', ..., 'refn']"></td></tr>
+		<tr><td class="em">Comments</td><td class="norm"><input type="text" name="comments" value="[comment, comment, ..., comment]"></td></tr>
+		<tr><td class="em">Links</td><td class="norm"><input type="text" name="links" value="[link1, link2, ..., linkn]"></td></tr>
+		<tr><td class="em">Author</td><td class="norm"><input type="text" name="authors" value="John Doe"></td></tr>
+	</table>
+</form>
+{% endblock %}

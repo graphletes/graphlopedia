@@ -7,11 +7,11 @@
 
 <body>
 	<div class="page">
-		<h1><a href="{{ url_for('index') }}" class="home">Graphlopedia!</a></h1>
+		<h1 class="home"><a href="{{ url_for('index') }}">Graphlopedia!</a></h1>
 		<hr />
 		{% block body %}{% endblock %}
 		<div id="footer">
-			Contact us at graphletes(at)googlegroups(dot)com
+			<a href="{{ url_for('admin_page') }}">Admin</a> | Contact us: graphletes(at)googlegroups(dot)com | Silly
 		</div>
 	</div>
 </body>

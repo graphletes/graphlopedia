@@ -4,6 +4,7 @@ import codecs
 
 from flask import Flask, request, g, render_template, url_for, redirect, flash, session
 from flask_pymongo import PyMongo
+import flask_login
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -11,6 +12,10 @@ app.config.from_envvar('GRAPH_SETTINGS')
 # app.secret_key = 'LOLOLOLOLOL'
 
 mongo = PyMongo(app)
+
+
+class User(flask_login.UserMixin):
+	pass
 
 def connect_db():
 	return mongo.db
@@ -30,14 +35,17 @@ def close_db(error):
 def index():
 	return render_template('index.html')
 
+login_manager = flask_login.LoginManager()
+# login_manager.init_app(app)
+
 @app.route('/search', methods=['GET'])
 def make_search():
-
 	if request.method == 'GET':
 		results = []
 		close_results = []
 		print('getting method')
-		db = mongo.db
+		# db = mongo.db
+		db = get_db()
 		try:
 			deg_seq = request.args['deg_seq']
 			# print(deg_seq)
@@ -90,6 +98,31 @@ def get_graph():
 		return render_template('graph.html', graph=graph, gJSON=gJSON)
 	else:
 		return render_template('404.html'), 404
+
+@app.route('/admin')
+def admin_page():
+	return render_template('admin.html')
+
+@app.route('/add', methods=['POST'])
+def add_graph():
+	if request.method == 'POST':
+		pass
+
+
+@login_manager.user_loader
+def user_loader(email):
+	user = User()
+	user.id = email
+	return user
+
+@login_manager.request_loader
+def request_loader(request):
+	email = request.form.get('email')
+
+	user = User()
+	user.id = email
+
+	user.is_authenticated = request.form['pw'] == 'password'
 
 # def array_cmp(a, b):
 # 	if type(a) != list or type(b) != list:
