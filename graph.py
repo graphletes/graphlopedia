@@ -1,6 +1,7 @@
 import os
 import json
 import codecs
+import ast
 
 from flask import Flask, request, g, render_template, url_for, redirect, flash, session
 from flask_pymongo import PyMongo
@@ -106,7 +107,32 @@ def admin_page():
 @app.route('/add', methods=['POST'])
 def add_graph():
 	if request.method == 'POST':
-		pass
+		try:
+			title = [ request.form['title'] ]
+			vertices = ast.literal_eval(request.form['vertices']) 
+			edges = ast.literal_eval(request.form['edges'])
+			deg_seq = ast.literal_eval(request.form['deg_seq'])
+			author = [ request.form['authors'] ]
+			refs = []
+			comments = []
+			links = []
+			if 'refs' in request.form:
+				refs = ast.literal_eval(request.form['refs'])
+			if 'comments' in request.form:
+				comments = ast.literal_eval(request.form['comments'])
+			if 'links' in request.form:
+				links = ast.literal_eval(request.form['links'])
+			flash('Data succesfully received!')
+			return redirect(url_for('admin_page'))
+		except KeyError:
+			flash('Please enter all req\'d fields in the proper format (see placeholder text).')
+			return redirect(url_for('admin_page'))
+		except ValueError:
+			flash('Please enter all req\'d fields in the proper format (see placeholder text).')
+			return redirect(url_for('admin_page'))
+	else:
+		return render_template('404.html'), 404
+
 
 
 @login_manager.user_loader
