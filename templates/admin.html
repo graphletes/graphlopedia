@@ -1,16 +1,17 @@
 {% extends "basic.html" %}
+{% from "_formhelpers.html" import render_table_field %}
 
 {% block body %}
-<h2>Admin Page:</h2>
-{% with messages = get_flashed_messages() %}
+{% with messages = get_flashed_messages(with_categories=true) %}
 	{% if messages %}
 		<ul class="flashes">
-			{% for message in messages %}
-				<li>{{ message }}</li>
+			{% for category, message in messages %}
+				<li class="{{ category }}">{{ message }}</li>
 			{% endfor %}
 		</ul>
 	{% endif %}
 {% endwith %}
+<h2>Admin Page:</h2>
 <h3 class="section">Add Graph</h3>
 
 <form method="post" action="{{ url_for('add_graph') }}">
@@ -27,4 +28,23 @@
 		<tr><td class="bottom"><span class="reqd">*</span> = required</td></tr>
 	</table>
 </form>
+
+{% if current_user.is_authenticated %}
+<h3 class="section">Change Password</h3>
+<h3 class="section">Add User</h3>
+<form method="post">
+	<table class="info">
+		<tr>{{ render_table_field(au_form.name) }}</tr>
+		<tr>{{ render_table_field(au_form.email) }}</tr>
+		<tr>{{ render_table_field(au_form.pass1) }}</tr>
+		<tr>{{ render_table_field(au_form.pass2) }}</tr>
+		<tr>{{ render_table_field(au_form.submit) }}</tr>
+		<tr><td class="bottom"><span class="reqd">*</span> = required</td></tr>
+	</table>
+	{{ au_form.csrf_token }}
+</form>
+<h3 class="section">Remove User</h3>
+{% else %}
+<h3 class="section">Login for more tools</h3>
+{% endif %}
 {% endblock %}

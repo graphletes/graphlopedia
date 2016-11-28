@@ -48,7 +48,6 @@ authors: Mike Bostock, Jason Davies
     return rescale();
   };
 })();
-
 // (function() {
 //   d3.fisheye = {
 //     scale: function(scaleType) {

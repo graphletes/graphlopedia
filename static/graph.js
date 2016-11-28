@@ -29,7 +29,7 @@
 	    // container.attr("pointer-events", "all")
 
 	    var simulation = d3.forceSimulation()
-		    .force("link", d3.forceLink().id(function(d) { return d.name; }).distance(125).strength(0.007))
+		    .force("link", d3.forceLink().id(function(d) { return d.name; }).distance(175).strength(0.007))
 		    .force("charge", d3.forceManyBody())
 		    .force("center", d3.forceCenter(width / 2, height / 2));
 

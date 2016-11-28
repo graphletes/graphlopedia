@@ -1,21 +1,43 @@
 {% extends "basic.html" %}
 {% block body %}
-	<form action="{{ url_for('make_search')}}" method="get" class="search">
-		<dl>
-			<dt>Degree Sequence:</dt>
-			<dd><input type="text" size="30" name="deg_seq"></dd>
-			<!-- <dt>Another field</dt>
-			<dd><input type="text" size="30" name="ano_field"></dd> -->
-			<dd><input type="submit" value="Search!"></dd>
-		</dl>
-	</form>
-	{% with messages = get_flashed_messages() %}
+	{% with messages = get_flashed_messages(with_categories=true) %}
 		{% if messages %}
 			<ul class="flashes">
-				{% for message in messages %}
-					<li>{{ message }}</li>
+				{% for category, message in messages %}
+					<li class="{{ category }}">{{ message }}</li>
 				{% endfor %}
 			</ul>
 		{% endif %}
 	{% endwith %}
+		<h2>Choose How To Search:</h2>
+	<h3 class="section">Degree Sequence</h3>
+	<div class="info">
+		<form action="{{ url_for('make_search')}}" method="get" class="search">
+			<dl>
+				<!-- <dt>Degree Sequence:</dt> -->
+				<dd><input type="text" name="deg_seq" class="bar" placeholder="3, 3, 2, 2, 2, 2" /></dd>
+				<dd class="enter"><input type="submit" value="Search!" class"submit"/></dd>
+			</dl>
+		</form>
+	</div>
+	<h3 class="section">Graph Name</h3>
+	<div class="info">
+		<form action="{{ url_for('make_search') }}" method="get" class="search">
+			<dl>
+				<!-- <dt>Name:</dt> -->
+				<dd><input type="text" name="title" class="bar" placeholder="Petersen" /></dd>
+				<dd class="enter"><input type="submit" value="Search!"  class"submit"/></dd>
+			</dl>
+		</form>
+	</div>
+	<h3 class="section">Graph ID</h3>
+	<div class="info">
+		<form action="{{ url_for('make_search') }}" method="get" class="search">
+			<dl>
+				<!-- <dt>Name:</dt> -->
+				<dd><input type="text" name="name" class="bar" placeholder="G000015" /></dd>
+				<dd class="enter"><input type="submit" value="Search!"  class"submit"/></dd>
+			</dl>
+		</form>
+	</div>
 {% endblock %}

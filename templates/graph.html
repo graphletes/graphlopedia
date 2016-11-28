@@ -13,7 +13,16 @@
 	<div>
 	{% if not graph%}
 		<p>No graph like that! You really shouldn't be here...</p>
-	{% endif %}
+	{% else %}
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				<ul class="flashes">
+					{% for category, message in messages %}
+						<li class="{{ category }}">{{ message }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endwith %}
 		<h2>{{ graph.name }}:</h2>
 		<svg class='graph'></svg>
 		<h3 class="section">Description</h3>
@@ -38,5 +47,6 @@
 		{% for comment in graph.comments%}
 			<p class="comment">{{comment}}</p>
 		{% endfor %}
+	{% endif %}
 	</div>
 {% endblock %}

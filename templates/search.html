@@ -1,23 +1,32 @@
 {% extends "basic.html" %}
 
 {% block body %}
-    <h2>Search Results for {{ query }}</h2>
+	{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			<ul class="flashes">
+				{% for category, message in messages %}
+					<li class="{{ category }}">{{ message }}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	{% endwith %}
+    <h3 class="section">Search Results for {{ query }}</h3>
 	{% if not results %}
-		<p>There are no exact matches.</p>	
+		<p class="info">There are no exact matches.</p>	
 	{% else %}
 		<table class="results">
-			<tr class="header"><td>Name</td><td>Title</td><td>No. Vertices</td></tr>
+			<tr><th>Name</th><th>Title</th><th>No. Vertices</th><th>Degree Sequence</th></tr>
 			{% for result in results %}
-				<tr><td><a href="{{ url_for('get_graph', gid=result.name) }}">{{ result.name }}</a></td><td>{{ result.title }}</td><td>{{ result.vertices[-1] }}</td></tr>
+				<tr><td><a href="{{ url_for('get_graph', gid=result.name) }}">{{ result.name }}</a></td><td>{{ result.title }}</td><td>{{ result.vertices[-1] }}</td><td>{{ result.degrees }}</td></tr>
 			{% endfor %}
 		</table>
 	{% endif %}
 	{% if close_results %}
-		<h2>Close Results for {{ query }}</h2>
+		<h3 class="section">Close Results for {{ query }}</h3>
 		<table class="results">
-			<tr class="header"><td>Name</td><td>Title</td><td>No. Vertices</td></tr>
+			<tr><th>Name</th><th>Title</th><th>No. Vertices</th><th>Degree Sequence</th></tr>
 			{% for result in close_results %}
-				<tr><td><a href="{{ url_for('get_graph', gid=result.name) }}">{{ result.name }}</a></td><td>{{ result.title }}</td><td>{{ result.vertices[-1] }}</td></tr>
+				<tr><td><a href="{{ url_for('get_graph', gid=result.name) }}">{{ result.name }}</a></td><td>{{ result.title }}</td><td>{{ result.vertices[-1] }}</td><td>{{ result.degrees }}</td></tr>
 			{% endfor %}
 		</table>
 	{% endif %}
