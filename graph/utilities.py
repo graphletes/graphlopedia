@@ -89,14 +89,6 @@ class User(UserMixin):
 		self.name = name
 		self.pass_hash = pass_hash
 
-	def get(email):
-		db = get_db()
-		user = db.users.find_one({'email': email})
-		if user:
-			return User(user['email'], user['name'], user['hash_pass'])
-		else:
-			return None
-
 	def get_id(self):
 		return self.email
 
@@ -105,6 +97,15 @@ class User(UserMixin):
 
 	def validate_login(self, passw):
 		return check_password_hash(self.pass_hash, passw)
+
+	@staticmethod
+	def get(email):
+		db = get_db()
+		user = db.users.find_one({'email': email})
+		if user:
+			return User(user['email'], user['name'], user['hash_pass'])
+		else:
+			return None
 
 	@staticmethod
 	def create_new_user(email, name, pass_hash):
