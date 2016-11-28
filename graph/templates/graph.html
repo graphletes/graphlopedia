@@ -41,7 +41,30 @@
 		</table>
 		<h3 class="section">About</h3>
 		<table class="info">
-			<tr><td class="em">Added By</td><td class="norm">{% if graph.authors|length > 1 %}{{ graph.authors|join(', ') }}{% else %}{{ graph.authors[0]}}{% endif %}</td></tr>
+			<tr><td class="em">Added By</td>
+			<td class="norm">
+			{% if graph.authors|length > 1 %}
+				{% if graph.authors[0] is mapping %}
+					<a href="{{ url_for('user', uid=graph.authors[0]['email']) }}">{{ graph.authors[0]['name'] }}</a>
+				{% else %}
+					{{ graph.authors[0] }}
+				{% endif %}
+
+				{% for author in graph.authors[1:] %}
+					{% if author is mapping %}
+						, <a href="{{ url_for('user', uid=author['email'])}}">{{ author['name'] }}</a>
+					{% else %}
+						, {{ author }}
+					{% endif %}
+				{% endfor %}
+			{% else %}
+				{% if graph.authors[0] is mapping %}
+					<a href="{{ url_for('user', uid=graph.authors[0]['email']) }}">{{ graph.authors[0]['name'] }}</a>
+				{% else %}
+					{{ graph.authors[0] }}
+				{% endif %}
+			{% endif %}
+			</td></tr>
 		</table>
 		<h3 class="section">Comments</h3>
 		{% for comment in graph.comments%}

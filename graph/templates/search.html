@@ -17,7 +17,7 @@
 		<table class="results">
 			<tr><th>Name</th><th>Title</th><th>No. Vertices</th><th>Degree Sequence</th></tr>
 			{% for result in results %}
-				<tr><td><a href="{{ url_for('get_graph', gid=result.name) }}">{{ result.name }}</a></td><td>{{ result.title }}</td><td>{{ result.vertices[-1] }}</td><td>{{ result.degrees }}</td></tr>
+				<tr><td><a href="{{ url_for('graph', gid=result.name, ref=request.url.split('/')[-1]) }}">{{ result.name }}</a></td><td>{{ result.title }}</td><td>{{ result.vertices[-1] }}</td><td>{{ result.degrees }}</td></tr>
 			{% endfor %}
 		</table>
 	{% endif %}
@@ -26,7 +26,7 @@
 		<table class="results">
 			<tr><th>Name</th><th>Title</th><th>No. Vertices</th><th>Degree Sequence</th></tr>
 			{% for result in close_results %}
-				<tr><td><a href="{{ url_for('get_graph', gid=result.name) }}">{{ result.name }}</a></td><td>{{ result.title }}</td><td>{{ result.vertices[-1] }}</td><td>{{ result.degrees }}</td></tr>
+				<tr><td><a href="{{ url_for('graph', gid=result.name, ref=request.url.split('/')[-1]) }}">{{ result.name }}</a></td><td>{{ result.title }}</td><td>{{ result.vertices[-1] }}</td><td>{{ result.degrees }}</td></tr>
 			{% endfor %}
 		</table>
 	{% endif %}

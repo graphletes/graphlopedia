@@ -23,7 +23,9 @@
 		<tr><td class="em">References</td><td class="norm"><input class="texti" type="text" name="refs" placeholder="['ref1', 'ref2', ..., 'refn']"></td></tr>
 		<tr><td class="em">Comments</td><td class="norm"><input class="texti" type="text" name="comments" placeholder="[comment, comment, ..., comment]"></td></tr>
 		<tr><td class="em">Links</td><td class="norm"><input class="texti" type="text" name="links" placeholder="[link1, link2, ..., linkn]"></td></tr>
+		{% if not current_user.is_authenticated %}
 		<tr><td class="em">Author<span class="reqd">*</span></td><td class="norm"><input class="texti" type="text" name="authors" placeholder="John Doe"></td></tr>
+		{% endif %}
 		<tr><td class="em"></td><td class="norm submit"><input type="submit" value="Submit!"></td></tr>
 		<tr><td class="bottom"><span class="reqd">*</span> = required</td></tr>
 	</table>
