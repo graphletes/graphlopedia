@@ -1,7 +1,7 @@
 import flask_login
 
 from graph import app
-from graph.forms import AddUserForm, LoginForm
+from graph.forms import AddUserForm, LoginForm, ChangePasswordForm, RemoveUserForm
 from graph.utilities import DuplicateUserError, User, is_safe_url, get_db, get_graph, put_graph
 from graph.search import *
 
@@ -75,7 +75,10 @@ def user():
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_page():
 	au_form = AddUserForm(prefix='add')
-	if au_form.validate_on_submit():
+	cp_form = ChangePasswordForm(prefix='change')
+	rm_form = RemoveUserForm(prefix='rm')
+
+	if au_form.submit.data and au_form.validate_on_submit():
 		email = au_form.email.data
 		name = au_form.name.data.title()
 		hash_pass = generate_password_hash(au_form.pass1.data)
@@ -90,7 +93,30 @@ def admin_page():
 			flash('User successfully added.', 'success')
 		else:
 			flash('Unable to add user.')
-	return render_template('admin.html', au_form = au_form)
+	elif cp_form.submit.data and cp_form.validate_on_submit():
+		if flask_login.current_user.validate_login(cp_form.c_pass.data):
+			res = flask_login.current_user.change_pass(generate_password_hash(cp_form.n_pass.data))
+			if res:
+				print(res.acknowledged, res.modified_count, res.matched_count)
+				flash('Successfully changed password!', 'success')
+			else:
+				flash('Unable to change password.')
+		else:
+			flash('Incorrect password.')
+	elif rm_form.validate_on_submit():
+		if flask_login.current_user.validate_login(rm_form.passw.data):
+			email = rm_form.email.data
+			if email == flask_login.current_user.get_id():
+				flash('You cannot remove yourself. Sorry!!!')
+			else:
+				res = User.rm_user(email)
+				if res:
+					flash('Removal successful!', 'success')
+				else:
+					flash('Unable to remove user.')
+		else:
+			flash('Incorrect password.')
+	return render_template('admin.html', au_form = au_form, cp_form = cp_form, rm_form = rm_form)
 
 @app.route('/add', methods=['POST'])
 def add_graph():
@@ -111,7 +137,7 @@ def login():
 		user = User.get(form.email.data)
 		if user and user.validate_login(form.password.data):
 			flask_login.login_user(user)
-			flash('Successfully logged in! Welcome %s.' % (user.get_name()), 'success')
+			flash('Successfully logged in! Welcome %s.' % (user.get_name().title()), 'success')
 			nxt = request.args.get('next')
 			if not is_safe_url(request.host_url, nxt):
 				return render_template('404.html'), 404

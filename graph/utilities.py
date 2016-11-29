@@ -98,6 +98,10 @@ class User(UserMixin):
 	def validate_login(self, passw):
 		return check_password_hash(self.pass_hash, passw)
 
+	def change_pass(self, new_pass_hash):
+		db = get_db()
+		return db.users.update_one({'email':self.email}, {'$set':{'hash_pass':new_pass_hash}})
+
 	@staticmethod
 	def get(email):
 		db = get_db()
@@ -106,6 +110,11 @@ class User(UserMixin):
 			return User(user['email'], user['name'], user['hash_pass'])
 		else:
 			return None
+
+	@staticmethod
+	def rm_user(email):
+		db = get_db()
+		return db.users.delete_one({'email':email})
 
 	@staticmethod
 	def create_new_user(email, name, pass_hash):

@@ -32,7 +32,6 @@
 </form>
 
 {% if current_user.is_authenticated %}
-<h3 class="section">Change Password</h3>
 <h3 class="section">Add User</h3>
 <form method="post">
 	<table class="info">
@@ -46,6 +45,26 @@
 	{{ au_form.csrf_token }}
 </form>
 <h3 class="section">Remove User</h3>
+<form method="post">
+	<table class="info">
+		<tr>{{ render_table_field(rm_form.email) }}</tr>
+		<tr>{{ render_table_field(rm_form.passw) }}</tr>
+		<tr>{{ render_table_field(rm_form.submit) }}</tr>
+		<tr><td class="bottom"><span class="reqd">*</span> = required</td></tr>
+	</table>
+	{{ rm_form.csrf_token }}
+</form>
+<h3 class="section">Change Password</h3>
+<form method="post">
+	<table class="info">
+		<tr>{{ render_table_field(cp_form.c_pass) }}</tr>
+		<tr>{{ render_table_field(cp_form.n_pass) }}</tr>
+		<tr>{{ render_table_field(cp_form.n_pass2) }}</tr>
+		<tr>{{ render_table_field(cp_form.submit) }}</tr>
+		<tr><td class="bottom"><span class="reqd">*</span> = required</td></tr>
+	</table>
+	{{ cp_form.csrf_token }}
+</form>
 {% else %}
 <h3 class="section">Login for more tools</h3>
 {% endif %}

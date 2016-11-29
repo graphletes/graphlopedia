@@ -1,6 +1,6 @@
 #Graphlopedia Flask App
 
-This app requires [Python 3](https://www.python.org/downloads/ "Download Python!") and several dependencies (all built around [Flask](http://flask.pocoo.org/ "Flask") ) to run.
+This app requires [Python 3](https://www.python.org/downloads/ "Download Python!") and several dependencies (all built around [Flask](http://flask.pocoo.org/ "Flask")) to run.
 
 These dependencies can be installed by running the following command (once [Python 3](https://www.python.org/downloads/ "Download Python!") is installed):
 
