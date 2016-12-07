@@ -384,5 +384,104 @@
     "references": ["H.L. Bodlaender. \"Theoretical Computer Science 209.\" (1998). Pp. 34"],
     "comments": ["K2,3"],
     "authors": ["Katrina Warner"]
-  }
+  },
+  "G000036" : {
+   "name": "G000036",
+   "title": "Guanine Structure",
+   "vertices": [1,2,3,4,5,6,7,8,9,10,11],
+   "edges": [[1,2],[1,5],[1,9],[2,3],[2,7],[3,6],[3,10],[4,5],[4,6],[4,11],[7,8],[8,9]],
+   "degrees": [3,3,3,3,2,2,2,2,2,1,1],
+   "links": ["https://arxiv.org/pdf/cs/0703132.pdf"],
+   "references": ["L. Peshkin. Center for Biomedical Informatics, Harvard Medical School.  \"Structure Induction by Lossless Graph Compression\" (2007)."],
+   "comments": [],
+   "authors": ["Katrina Warner"]
+   },
+    "G000037": {
+       "name": "G000037",
+       "title": "Phosphate and Ribose--DNA Backbone",
+       "vertices": [1,2,3,4,5,6,7,8,9,10,11],
+       "edges": [[1,4],[1,9],[1,10],[1,11],[2,3],[2,4],[2,5],[3,7],[3,8]],
+       "degrees": [4,3,3,2,2,2,2,1,1,1,1],
+       "links":["https://arxiv.org/pdf/cs/0703132.pdf"],
+       "references": ["L. Peshkin. Center for Biomedical Informatics, Harvard Medical School.  \"Structure Induction by Lossless Graph Compression\" (2007)."],
+       "comments": [""],
+       "authors": ["Katrina Warner"]
+    },
+    "G000038": {
+       "name": "G000038",
+       "title": "Original Factor Graph",
+       "vertices": [1,2,3,4,5,6,7,8,9,10,11,12,13,14],
+       "edges": [[1,2],[1,7],[1,14],[2,4],[2,12],[3,4],[3,8],[3,10],[4,9],[5,6],[5,9],[5,11],[6,12],[6,13],[7,8],[10,11]],
+       "degrees": [3,3,3,3,3,3,2,2,2,2,2,2,1,1],
+       "links":["https://arxiv.org/pdf/cs/0612030.pdf"],
+       "references": ["J. Mooji, B. Kappen. \"Loop Corrections for Approximate Inference\" (2006)"],
+       "comments": [],
+       "authors": ["Katrina Warner"]
+    },
+    "G000039": {
+       "name": "G000039",
+       "title": "Cavity Graph of i",
+       "vertices": [1,2,3,4,5,6,7,8,9,10],
+       "edges": [[1,2],[1,8],[1,9],[2,3],[3,10],[4,5],[4,7],[5,6]],
+       "degrees": [3,2,2,2,2,1,1,1,1,1],
+       "links":["https://arxiv.org/pdf/cs/0612030.pdf"],
+       "references": ["J. Mooji, B. Kappen. \"Loop Corrections for Approximate Inference\" (2006)"],
+       "comments": [],
+       "authors": ["Katrina Warner"]
+    },
+    "G000040": {
+       "name": "G000040",
+       "title": "Fig.1",
+       "vertices": [1,2,3,4,5,6],
+       "edges": [[1,2],[1,3],[1,4],[1,5],[1,6],[2,3],[2,4],[2,5],[2,6],[3,4],[3,5],[3,6],[4,5],[4,6],[5,6]],
+       "degrees": [5,5,5,5,5,5],
+       "links":["https://arxiv.org/pdf/hep-th/0611042.pdf"],
+       "references": ["A. Baratin, L. Friedel. Perimeter Institute for Theoretical Physics. \"Hidden Quantum Gravity in 4d Feynman Diagrams\" (2007)"],
+       "comments": [],
+       "authors": ["Katrina Warner"]
+    },
+    "G000041": {
+       "name": "G000041",
+       "title": "K5 Graph",
+       "vertices": [1,2,3,4,5],
+       "edges": [[1,2],[1,3],[1,4],[1,5],[2,3],[2,4],[2,5],[3,4],[3,5],[4,5]],
+       "degrees": [4,4,4,4,4],
+       "links":["https://arxiv.org/pdf/hep-th/0611042.pdf"],
+       "references": ["A. Baratin, L. Friedel. Perimeter Institute for Theoretical Physics. \"Hidden Quantum Gravity in 4d Feynman Diagrams\" (2007)"],
+       "comments": [],
+       "authors": ["Katrina Warner"]
+    },
+    "G000042": {
+       "name": "G000042",
+       "title": "Figure 1",
+       "vertices": [1,2,3,4],
+       "edges": [[1,2],[1,3],[1,4],[2,3]],
+       "degrees": [3,2,2,1],
+       "links":["https://arxiv.org/pdf/1304.0478.pdf"],
+       "references": ["Z. Cinkir. \"Explicit Computation of Certain Arakelov-Green Functions\" (2013)."],
+       "comments": [],
+       "authors": ["Katrina Warner"]
+       },
+    "G000043": {
+       "name": "G000043",
+       "title": "Tetrahedral Graph",
+       "vertices": [1,2,3,4],
+       "edges": [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]],
+       "degrees": [3,3,3,3],
+       "links":["https://arxiv.org/pdf/1304.0478.pdf"],
+       "references": ["Z. Cinkir. \"Explicit Computation of Certain Arakelov-Green Functions\" (2013)."],
+       "comments": [],
+       "authors": ["Katrina Warner"]
+    },
+    "G000044": {
+       "name": "G000044",
+       "title": "St8",
+       "vertices": [1,2,3,4,5,6,7,8],
+       "edges": [[1,2],[1,3],[1,8],[2,3],[2,5],[4,5],[4,7],[5,6],[6,7],[7,8]],
+       "degrees": [3,3,3,3,3,3,3,3],
+       "links":["https://arxiv.org/pdf/1611.07899.pdf"],
+       "references": ["N. Kothari. \"Generating Near-Bipartite Bricks\" (2016)."],
+       "comments": ["Stair Case","Order 8"],
+       "authors": ["Katrina Warner"]
+    }
 }

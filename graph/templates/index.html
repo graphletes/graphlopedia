@@ -1,4 +1,7 @@
 {% extends "basic.html" %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='tab.js') }}"></script>
+{% endblock %}
 {% block body %}
 	{% with messages = get_flashed_messages(with_categories=true) %}
 		{% if messages %}
@@ -10,34 +13,72 @@
 		{% endif %}
 	{% endwith %}
 		<h2>Choose How To Search:</h2>
-	<h3 class="section">Degree Sequence</h3>
-	<div class="info">
-		<form action="{{ url_for('make_search')}}" method="get" class="search">
-			<dl>
-				<!-- <dt>Degree Sequence:</dt> -->
-				<dd><input type="text" name="deg_seq" class="bar" placeholder="3, 3, 2, 2, 2, 2" /></dd>
-				<dd class="enter"><input type="submit" value="Search!" class"submit"/></dd>
-			</dl>
-		</form>
+		<ul class="tab nav">
+		  <li id="single" class="em tablinks"><!-- <a href="javascript:void(0)"> -->Single Graph<!-- </a> --></li>
+		  <li id="family" class="em tablinks"><!-- <a href="javascript:void(0)"> -->Graph Family<!-- </a> --></li>
+		</ul>
+	<div class="tabcontent" id="singlebox">
+		<h3 class="section">Degree Sequence</h3>
+		<div class="info">
+			<form action="{{ url_for('make_search')}}" method="get" class="search">
+				<dl>
+					<!-- <dt>Degree Sequence:</dt> -->
+					<dd><input type="text" name="deg_seq" class="bar" placeholder="3, 3, 2, 2, 2, 2" /></dd>
+					<dd class="enter"><input type="submit" value="Search!" class"submit"/></dd>
+				</dl>
+			</form>
+		</div>
+		<h3 class="section">Graph Name</h3>
+		<div class="info">
+			<form action="{{ url_for('make_search') }}" method="get" class="search">
+				<dl>
+					<!-- <dt>Name:</dt> -->
+					<dd><input type="text" name="title" class="bar" placeholder="Petersen" /></dd>
+					<dd class="enter"><input type="submit" value="Search!"  class"submit"/></dd>
+				</dl>
+			</form>
+		</div>
+		<h3 class="section">Graph ID</h3>
+		<div class="info">
+			<form action="{{ url_for('make_search') }}" method="get" class="search">
+				<dl>
+					<!-- <dt>Name:</dt> -->
+					<dd><input type="text" name="name" class="bar" placeholder="G000015" /></dd>
+					<dd class="enter"><input type="submit" value="Search!"  class"submit"/></dd>
+				</dl>
+			</form>
+		</div>
 	</div>
-	<h3 class="section">Graph Name</h3>
-	<div class="info">
-		<form action="{{ url_for('make_search') }}" method="get" class="search">
-			<dl>
-				<!-- <dt>Name:</dt> -->
-				<dd><input type="text" name="title" class="bar" placeholder="Petersen" /></dd>
-				<dd class="enter"><input type="submit" value="Search!"  class"submit"/></dd>
-			</dl>
-		</form>
-	</div>
-	<h3 class="section">Graph ID</h3>
-	<div class="info">
-		<form action="{{ url_for('make_search') }}" method="get" class="search">
-			<dl>
-				<!-- <dt>Name:</dt> -->
-				<dd><input type="text" name="name" class="bar" placeholder="G000015" /></dd>
-				<dd class="enter"><input type="submit" value="Search!"  class"submit"/></dd>
-			</dl>
-		</form>
+	<div class="tabcontent" id="familybox">
+		<h3 class="section">Degree Sequence</h3>
+		<div class="info">
+			<form action="{{ url_for('make_search')}}" method="get" class="search">
+				<dl>
+					<!-- <dt>Degree Sequence:</dt> -->
+					<dd><input type="text" name="deg_seq" class="bar" placeholder="3, 3, 2, 2, 2, 2" /></dd>
+					<dd class="enter"><input type="submit" value="Search!" class"submit"/></dd>
+				</dl>
+			</form>
+		</div>
+		<h3 class="section">Family Name</h3>
+		<div class="info">
+			<form action="{{ url_for('make_search') }}" method="get" class="search">
+				<dl>
+					<!-- <dt>Name:</dt> -->
+					<dd><input type="text" name="title" class="bar" placeholder="Petersen" /></dd>
+					<dd class="enter"><input type="submit" value="Search!"  class"submit"/></dd>
+				</dl>
+			</form>
+		</div>
+		<h3 class="section">Family ID</h3>
+		<div class="info">
+			<form action="{{ url_for('make_search') }}" method="get" class="search">
+				<dl>
+					<!-- <dt>Name:</dt> -->
+					<dd><input type="text" name="name" class="bar" placeholder="F000015" /></dd>
+					<dd class="enter"><input type="submit" value="Search!"  class"submit"/></dd>
+				</dl>
+			</form>
+		</div>
 	</div>
 {% endblock %}

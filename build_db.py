@@ -17,7 +17,7 @@ db = client[config['MONGO_DBNAME']]
 
 # print(db.collection_names())
 
-elems = jload(codecs.open('static/gdb.json', 'r', 'utf-8-sig'))
+elems = jload(codecs.open('graph/static/gdb.json', 'r', 'utf-8-sig'))
 
 names = set()
 for doc in db.graphs.find().sort('name', ASCENDING):

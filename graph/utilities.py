@@ -30,7 +30,9 @@ def get_graph(gid):
 			gJSON['nodes'].append({'name': node, "group": 1})
 		for edge in graph['edges']: 
 			gJSON['edges'].append({'source': edge[0], 'target': edge[1], 'weight': 1})
+
 		####
+		# print(gJSON)
 	
 	return graph, gJSON
 

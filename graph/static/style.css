@@ -12,6 +12,86 @@ h1, h2 {
 	margin : 0;
 }
 
+h1 {
+	font-weight: bold;
+	font-size: 2.5em;
+}
+
+.em {
+	padding: 0.4em;
+	font-weight: bold;
+	background-color: #d8e8f2;
+	white-space: nowrap;
+}
+
+/* Style the list */
+ul.tab {
+    list-style-type: none;
+    margin: 0;
+    margin-top: 0.5em;
+    padding: 0em;
+    overflow: hidden;
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    /*background-color: #f1f1f1;*/
+}
+
+#single {
+	border-right: 0.3em solid #ddd;
+	margin-left: 0.3em;
+}
+
+/* Float the list items side by side */
+ul.tab li {
+	float: left;
+	padding: 0.3em;
+	/*margin-left: 0.3em;*/
+}
+
+/* Style the links inside the list items */
+ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    /*padding: 14px 16px;*/
+    text-decoration: none;
+    transition: 0.3s;
+    /*font-size: 17px;*/
+}
+
+/* Change background color of links on hover */
+.em:hover, .tablinks:hover {
+	background-color: #bbd6e9;
+	cursor: pointer;
+}
+
+/* Create an active/current tablink class */
+.tablinks:focus, .active {background-color: #9dc5df;}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+/*    padding: 6px 12px;
+    border: 1px solid #ccc;*/
+    border-top: none;
+    background-color: inherit;
+}
+
+.tabcontent {
+    -webkit-animation: fadeEffect 1.5s;
+    animation: fadeEffect 1.5s;
+}
+
+@-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
 .float-left {
 	float: left;
 }
@@ -111,13 +191,6 @@ th {
 .info {
 	padding-left: 3em;
 	padding-right: 3em;
-}
-
-.em {
-	padding: 0.4em;
-	font-weight: bold;
-	background-color: #d8e8f2;
-	white-space: nowrap;
 }
 
 .norm {
