@@ -5,7 +5,7 @@ from pymongo import MongoClient, ASCENDING, DESCENDING
 from pymongo.errors import BulkWriteError, InvalidOperation
 
 config = {}
-with open('../settings.cfg', 'r') as f:
+with open('graph/settings.cfg', 'r') as f:
 	for line in f:
 		key, val = line.split('=')
 		config[key.strip()] = val.strip().replace("'", '')
