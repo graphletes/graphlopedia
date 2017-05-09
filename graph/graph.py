@@ -4,7 +4,7 @@ import codecs
 import ast
 from datetime import timedelta
 
-from flask import Flask, request #, g, render_template, url_for, redirect, flash, session
+from flask import Flask, request, render_template #, g, render_template, url_for, redirect, flash, session
 from urllib.parse import urlparse, urljoin
 from flask_pymongo import PyMongo
 import flask_login
@@ -31,9 +31,10 @@ def connect_db():
 	return mongo.db
 
 def get_db():
-	if not hasattr(g, 'db'):
-		g.db = connect_db()
-	return g.db
+	if not hasattr(mongo, 'db'):
+		mongo.db = connect_db()
+	print(mongo.db)
+	return mongo.db
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
@@ -90,7 +91,7 @@ class AddUserForm(FlaskForm):
 
 @app.teardown_appcontext
 def close_db(error):
-	if hasattr(g, 'db'):
+	if hasattr(mongo, 'db'):
 		# log that database has been closed
 		print("database connection closed")
 
@@ -302,7 +303,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@login_manager.request_loader
+#@login_manager.request_loader
 def request_loader(request):
 	email = request.form.get('email')
 

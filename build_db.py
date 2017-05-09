@@ -11,13 +11,15 @@ with open('graph/settings.cfg', 'r') as f:
 		config[key.strip()] = val.strip().replace("'", '')
 
 client = MongoClient() 
+#db = client[config['MONGO_DBNAME']]\
+#print(config['MONGO_USERNAME'], config['MONGO_PASSWORD'])
 client.admin.authenticate(config['MONGO_USERNAME'], config['MONGO_PASSWORD'])
 db = client[config['MONGO_DBNAME']]
 
 
 # print(db.collection_names())
 
-elems = jload(codecs.open('graph/static/gdb.json', 'r', 'utf-8-sig'))
+elems = jload(codecs.open('graph/static/graphs.json', 'r', 'utf-8-sig'))
 
 names = set()
 for doc in db.graphs.find().sort('name', ASCENDING):
