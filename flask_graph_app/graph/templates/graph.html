@@ -1,0 +1,75 @@
+{% extends "basic.html" %}
+
+{% block scripts %}
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="{{ url_for('static', filename='fisheye.js') }}"></script>
+	<script type="text/javascript">
+		var graph = {{ gJSON|tojson }};
+	</script>
+	<script src="{{ url_for('static', filename='graph.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+	<div>
+	{% if not graph%}
+		<p>No graph like that! You really shouldn't be here...</p>
+	{% else %}
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				<ul class="flashes">
+					{% for category, message in messages %}
+						<li class="{{ category }}">{{ message }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endwith %}
+		<h2>{{ graph.name }}:</h2>
+		<svg class='graph'></svg>
+		<h3 class="section">Description</h3>
+		<table class="info">
+			{% if graph.title %}
+				<tr><td class="em">Name</td><td class="norm">{{ graph.title }}</td></tr>
+			{% endif %}
+			<tr><td class="em">Vertex Count</td><td class="norm">{{ graph.vertices|length }}</td></tr>
+			<tr><td class="em">Edge Count</td><td class="norm">{{ graph.edges|length }}</td></tr>
+		</table>
+		<h3 class="section">References</h3>
+		<table class="info">
+			{% for ref in graph.references %}
+			<tr><td class="em">{{ loop.index }}.</td><td class="norm">{{ ref }}</td></tr>
+			{% endfor %}
+		</table>
+		<h3 class="section">About</h3>
+		<table class="info">
+			<tr><td class="em">Added By</td>
+			<td class="norm">
+			{% if graph.authors|length > 1 %}
+				{% if graph.authors[0] is mapping %}
+					<a href="{{ url_for('user', uid=graph.authors[0]['email']) }}">{{ graph.authors[0]['name'] }}</a>
+				{% else %}
+					{{ graph.authors[0] }}
+				{% endif %}
+
+				{% for author in graph.authors[1:] %}
+					{% if author is mapping %}
+						, <a href="{{ url_for('user', uid=author['email'])}}">{{ author['name'] }}</a>
+					{% else %}
+						, {{ author }}
+					{% endif %}
+				{% endfor %}
+			{% else %}
+				{% if graph.authors[0] is mapping %}
+					<a href="{{ url_for('user', uid=graph.authors[0]['email']) }}">{{ graph.authors[0]['name'] }}</a>
+				{% else %}
+					{{ graph.authors[0] }}
+				{% endif %}
+			{% endif %}
+			</td></tr>
+		</table>
+		<h3 class="section">Comments</h3>
+		{% for comment in graph.comments%}
+			<p class="comment">{{comment}}</p>
+		{% endfor %}
+	{% endif %}
+	</div>
+{% endblock %}
