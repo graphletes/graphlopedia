@@ -1,0 +1,71 @@
+{% extends "basic.html" %}
+{% from "_formhelpers.html" import render_table_field %}
+
+{% block body %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+	{% if messages %}
+		<ul class="flashes">
+			{% for category, message in messages %}
+				<li class="{{ category }}">{{ message }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+{% endwith %}
+<h2>Admin Page:</h2>
+<h3 class="section">Add Graph</h3>
+
+<form method="post" action="{{ url_for('add_graph') }}">
+	<table class="info">
+		<tr><td class="em">Graph Name<span class="reqd">*</span></td><td class="norm"><input class="texti"  type="text" name="title" placeholder="graph xyz"></td></tr>
+		<tr><td class="em">Vertices<span class="reqd">*</span></td><td class="norm"><input class="texti" type="text" name="vertices" placeholder="[1, 2, ..., n]"></td></tr>
+		<tr><td class="em">Edges<span class="reqd">*</span></td><td class="norm"><input class="texti" type="text" name="edges" placeholder="[[x1, y1], [x2, y2], ..., [xn, ym]]"></td></tr>
+		<tr><td class="em">Degree Sequence<span class="reqd">*</span></td><td class="norm"><input class="texti" type="text" name="deg_seq" placeholder="[x, y, ..., z]"></td></tr>
+		<tr><td class="em">References</td><td class="norm"><input class="texti" type="text" name="refs" placeholder="['ref1', 'ref2', ..., 'refn']"></td></tr>
+		<tr><td class="em">Comments</td><td class="norm"><input class="texti" type="text" name="comments" placeholder="[comment, comment, ..., comment]"></td></tr>
+		<tr><td class="em">Links</td><td class="norm"><input class="texti" type="text" name="links" placeholder="[link1, link2, ..., linkn]"></td></tr>
+		{% if not current_user.is_authenticated %}
+		<tr><td class="em">Author<span class="reqd">*</span></td><td class="norm"><input class="texti" type="text" name="authors" placeholder="John Doe"></td></tr>
+		{% endif %}
+		<tr><td class="em"></td><td class="norm submit"><input type="submit" value="Submit!"></td></tr>
+		<tr><td class="bottom"><span class="reqd">*</span> = required</td></tr>
+	</table>
+</form>
+
+{% if current_user.is_authenticated %}
+<h3 class="section">Add User</h3>
+<form method="post">
+	<table class="info">
+		<tr>{{ render_table_field(au_form.name) }}</tr>
+		<tr>{{ render_table_field(au_form.email) }}</tr>
+		<tr>{{ render_table_field(au_form.pass1) }}</tr>
+		<tr>{{ render_table_field(au_form.pass2) }}</tr>
+		<tr>{{ render_table_field(au_form.submit) }}</tr>
+		<tr><td class="bottom"><span class="reqd">*</span> = required</td></tr>
+	</table>
+	{{ au_form.csrf_token }}
+</form>
+<h3 class="section">Remove User</h3>
+<form method="post">
+	<table class="info">
+		<tr>{{ render_table_field(rm_form.email) }}</tr>
+		<tr>{{ render_table_field(rm_form.passw) }}</tr>
+		<tr>{{ render_table_field(rm_form.submit) }}</tr>
+		<tr><td class="bottom"><span class="reqd">*</span> = required</td></tr>
+	</table>
+	{{ rm_form.csrf_token }}
+</form>
+<h3 class="section">Change Password</h3>
+<form method="post">
+	<table class="info">
+		<tr>{{ render_table_field(cp_form.c_pass) }}</tr>
+		<tr>{{ render_table_field(cp_form.n_pass) }}</tr>
+		<tr>{{ render_table_field(cp_form.n_pass2) }}</tr>
+		<tr>{{ render_table_field(cp_form.submit) }}</tr>
+		<tr><td class="bottom"><span class="reqd">*</span> = required</td></tr>
+	</table>
+	{{ cp_form.csrf_token }}
+</form>
+{% else %}
+<h3 class="section">Login for more tools</h3>
+{% endif %}
+{% endblock %}

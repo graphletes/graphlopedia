@@ -1,0 +1,285 @@
+body {
+	font-family: sans-serif;
+	background: #eee;
+}
+
+a, h1, h2 {
+	color: #377ba8;
+}
+
+h1, h2 {
+	font-family: 'Georgia', serif;
+	margin : 0;
+}
+
+h1 {
+	font-weight: bold;
+	font-size: 2.5em;
+}
+
+.em {
+	padding: 0.4em;
+	font-weight: bold;
+	background-color: #d8e8f2;
+	white-space: nowrap;
+}
+
+/* Style the list */
+ul.tab {
+    list-style-type: none;
+    margin: 0;
+    margin-top: 0.5em;
+    padding: 0em;
+    overflow: hidden;
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    /*background-color: #f1f1f1;*/
+}
+
+#single {
+	border-right: 0.3em solid #ddd;
+	margin-left: 0.3em;
+}
+
+/* Float the list items side by side */
+ul.tab li {
+	float: left;
+	padding: 0.3em;
+	/*margin-left: 0.3em;*/
+}
+
+/* Style the links inside the list items */
+ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    /*padding: 14px 16px;*/
+    text-decoration: none;
+    transition: 0.3s;
+    /*font-size: 17px;*/
+}
+
+/* Change background color of links on hover */
+.em:hover, .tablinks:hover {
+	background-color: #bbd6e9;
+	cursor: pointer;
+}
+
+/* Create an active/current tablink class */
+.tablinks:focus, .active {background-color: #9dc5df;}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+/*    padding: 6px 12px;
+    border: 1px solid #ccc;*/
+    border-top: none;
+    background-color: inherit;
+}
+
+.tabcontent {
+    -webkit-animation: fadeEffect 1.5s;
+    animation: fadeEffect 1.5s;
+}
+
+@-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.float-left {
+	float: left;
+}
+
+.graph {
+	width : 800px;
+	height : 400px;
+	border: 2px dashed #ccc;
+	margin: 1em auto;
+}
+
+.page {
+	margin: 2em auto;
+	width: 50em;
+	border: 5px solid #ccc;
+	padding: 0.8em;
+	padding-bottom: 0.25em;
+	background: white;
+}
+
+.nav {
+	border-top: 2px solid #ccc;
+	border-bottom: 2px solid #ccc;
+	text-align: right;
+	padding: 0.4em;
+	margin-bottom: 1.5em;
+}
+
+.log {
+	font-weight: bold;
+}
+
+/*.center {
+	text-align: center;
+}*/
+
+/*.center dt, .center dd {
+	width: 10em;
+	margin: auto;
+	text-align: left;
+	clear: left;
+}*/
+
+.box {
+	width: 15em;
+	margin: auto;
+	padding-left: 1.8em;
+	padding-right: 1.8em;
+	padding-top: 0.8em;
+	padding-bottom: 0.8em;
+	border-radius: 20px;
+	background-color: #ccc;
+}
+
+.box dd {
+	margin-left: 0em;
+}
+
+.box input[type=text], .box input[type=password] {
+	width: 100%;
+}
+
+.errors {
+	background-color: #ff6b6b;
+}
+
+th {
+	text-align: left;
+	background-color: #d8e8f2;
+	padding: 0.4em;
+}
+
+.results {
+	padding-right: 3em;
+	padding-left: 3em;
+}
+
+.results td {
+	background-color: #f6f9fc;
+	padding: 0.25em;
+}
+
+.home {
+	margin-bottom: 0.5em;
+	margin-top: 0.25em;
+}
+
+.home a {
+	text-decoration: none;
+}
+
+.section {
+	background-color: #ccc;
+	padding: 0.3em;
+}
+
+.info {
+	padding-left: 3em;
+	padding-right: 3em;
+}
+
+.norm {
+	padding-left: 1em;
+	padding-right: 1em;
+	background-color: #f6f9fc;
+	width: 100%;
+}
+
+.search {
+	margin-top: 2em;
+}
+
+.search dd {
+	margin-left: 0em;
+}
+
+.bar {
+	width: 100%;
+	/*height: 21px;*/
+	font-size: 1.5em;
+	padding-left: 0.2em;
+	padding-right: 0.2em;
+}
+
+.enter {
+	text-align: right;
+}
+
+.enter input[type=submit] {
+	font-size: 1.5em;
+	height: 2em;
+	margin-right: -0.6em;
+	margin-top: 0.2em;
+}
+
+.flashes {
+	font-weight: bold; 
+	list-style-type: none;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
+.flashes li {
+	background-color: #ff6b6b;
+	padding: 0.5em;
+}
+
+.flashes .success {
+	background-color: #d2ffd2;
+}
+
+.comment {
+	background-color: #d8e8f2;
+	/*background-color: #f6f9fc;*/
+	border-radius: 15px;
+	padding: 1em;
+	margin-left: 3em;
+	margin-right: 3em;
+}
+
+.submit {
+	text-align: right;
+}
+
+.reqd {
+	color: #ff6b6b;
+}
+
+.bottom {
+	text-align: right;
+}
+
+.links {
+  stroke: #999;
+  stroke-opacity: 0.75;
+}
+
+.texti {
+	width: 100%;
+}
+
+#footer {
+	/*position: absolute;*/
+	width: 100%;
+	text-align: center;
+	/*padding: 10px;*/
+	margin-top: 3em;
+	bottom: 0;
+}
