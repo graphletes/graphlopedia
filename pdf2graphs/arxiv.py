@@ -9,7 +9,7 @@ class helper:
 	skipped = list()
 	
 	# opens tarfile for reading
-	def __init__(self, name, write_name="output", write='wrt', output='out', messages=False):
+	def __init__(self, name, write_name="output.tar", write='wrt', output='out', messages=False):
 		if tarfile.is_tarfile(name):
 			# create tar reader, articles are still compressed
 			self.block_reader = tarfile.open(name, 'r:')
@@ -44,8 +44,11 @@ class helper:
 			if os.path.isdir(self.write_path):
 				shutil.rmtree(self.write_path)
 
-		
-		self.article = next(self.article_names)
+		try:
+			self.article = next(self.article_names)
+		except StopIteration:
+			return None			
+
 		if self.article.endswith('.pdf'):
 			if self.messages:
 				print("decompressing pdf %s" % self.article)
@@ -122,7 +125,7 @@ class helper:
 	def close(self):
 		if self.messages:
 			print("closing arXiv helper")
-			for name in skipped:
+			for name in self.skipped:
 				print(name)
 
 		if os.path.isdir(self.temp_path):

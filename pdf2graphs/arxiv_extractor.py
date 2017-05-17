@@ -1,3 +1,4 @@
+import json
 import arxiv
 import pdf2graphs
 import argparse
@@ -39,7 +40,13 @@ while arxiv_reader.next_article():
 				continue
 
 			for image in images:
-				if image[0] in documents:
+				if type(image) is dict:
+					if len(images) > 1:
+						info = open(path.join(write_folder,'info.txt'), 'w+')
+						info.write(json.dumps(image))
+						info.close()
+				
+				elif image[0] in documents:
 					copyfile(path.join(output_folder,image[0]), path.join(write_folder,image[0]))
 					image_name, _ = path.splitext(image[0])
 					if len(image[1]) > 0:

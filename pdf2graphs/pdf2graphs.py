@@ -151,6 +151,7 @@ def parse_tex(filename):
 		return None
 
 	images = list()
+	info = dict()
 
 	# while next_line
 	i = 0
@@ -159,6 +160,42 @@ def parse_tex(filename):
 			# line is a comment
 			pass
 
+		elif "\\author{" in lines[i]:
+			search = re.search("author{(.*)}", lines[i])
+			if search:
+				if 'author' in info:
+					info['author'] += [author.strip() for author in search.group(1).split(',')]
+				else:
+					info['author'] = [author.strip() for author in search.group(1).split(',')]
+			else:
+				content = lines[i].split("\\author{")		
+				if len(content) > 1:
+					if 'author' in info:
+						info['author'] += [author.strip() for author in content[1].split(',')]
+					else:
+						info['author'] = [author.strip() for author in content[1].split(',')]
+				
+				while i < len(lines) and '}' not in lines[i]:
+					if 'author' in info:
+						info['author'] += [author.strip() for author in lines[i].split(',')]
+					else:
+						info['author'] = [author.strip() for author in lines[i].split(',')]
+					
+					i += 1
+				
+				if i < len(lines) and not lines[i].startswith('}'):
+					content = lines[i].split('}')[0]
+					if 'author' in info:
+						info['author'] += [author.strip() for author in content.split(',')]
+					else:
+						info['author'] = [author.strip() for author in content.split(',')]						
+
+
+		elif "\\title" in lines[i]:
+			search = re.search("title{(.*)}", lines[i])
+			if search:
+				info['title'] = search.group(1)
+
 		elif "\\begin{figure}" in lines[i]:
 			tags = set()
 			filename = str()
@@ -166,14 +203,14 @@ def parse_tex(filename):
 			while i < len(lines) and "\\end{figure}" not in lines[i]:
 				if "\\caption" in lines[i]:
 					# get keywords from caption
-					caption = re.search("\\caption{(.*)}", lines[i])
+					caption = re.search("caption{(.*)}", lines[i])
 					if caption:
 						tokens = re.sub("[^\w']", ' ', caption.group(1)).split()
 						for token in tokens:
 							if len(token) > 3:
 								tags.add(token.lower())
 					else:
-						content = lines[i].split("\\caption{")
+						content = lines[i].split("caption{")
 						if len(content) > 1:
 							tokens = re.sub("[^\w']", ' ', content[1]).split()
 							for token in tokens:
@@ -200,23 +237,23 @@ def parse_tex(filename):
 			
 				elif "\\includegraphics" in lines[i]:
 					# get filename
-					search = re.search("\\includegraphics(\[.*\])?{([\w\.\-]+)}", lines[i])
+					search = re.search("includegraphics(\[.*\])?{([\w\.\-]+)}", lines[i])
 					if search:
 						filename = search.group(2)		
 					
 				elif "\\psfig" in lines[i]:
 					# get filename
-					search = re.search("\\psfig{(file=)?([\w\.\-]+)(,[^=]+=[^=]+)*}", lines[i])
+					search = re.search("psfig{(file=)?([\w\.\-]+)(,[^=]+=[^=]+)*}", lines[i])
 					if search:
 						filename = search.group(2)
 
 				elif "\\epsffile" in lines[i]:
-					search = re.search("\\epsffile{([\w\.\-]+)}", lines[i])
+					search = re.search("epsffile{([\w\.\-]+)}", lines[i])
 					if search:
 						filename = search.group(1)
 
 				elif "\\plotone" in lines[i]:
-					search = re.search("\\plotone{([\w\.\-]+)}", lines[i])
+					search = re.search("plotone{([\w\.\-]+)}", lines[i])
 					if search:
 						filename = search.group(1)
 				
@@ -227,29 +264,32 @@ def parse_tex(filename):
 
 		elif "\\includegraphics" in lines[i]:
 			# get filename
-			search = re.search("\\includegraphics(\[.*\])?{([\w\.\-]+)}", lines[i])
+			search = re.search("includegraphics(\[.*\])?{([\w\.\-]+)}", lines[i])
 			if search:
 				images.append((search.group(2), list()))
 			
 		elif "\\psfig" in lines[i]:
 			# get filename
-			search = re.search("\\psfig{(file=)?([\w\.\-]+)(,[^=]+=[^=]+)*}", lines[i])
+			search = re.search("psfig{(file=)?([\w\.\-]+)(,[^=]+=[^=]+)*}", lines[i])
 			if search:
 				images.append((search.group(2), list()))
 
 		elif "\\epsffile" in lines[i]:
-			search = re.search("\\epsffile{([\w\.\-]+)}", lines[i])
+			search = re.search("epsffile{([\w\.\-]+)}", lines[i])
 			if search:
 				images.append((search.group(1), list()))
 
 		elif "\\plotone" in lines[i]:
-			search = re.search("\\plotone{([\w\.\-]+)}", lines[i])
+			search = re.search("plotone{([\w\.\-]+)}", lines[i])
 			if search:
 				images.append((search.group(1), list()))
 
 		i += 1
-	
-	return images
+
+	if info:
+		images.append(info)	
+
+	return images 
 
 def extract(filename,write='.',image_type='png'):
 	if filename.endswith('.pdf'):
