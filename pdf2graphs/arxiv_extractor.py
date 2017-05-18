@@ -22,44 +22,43 @@ while arxiv_reader.next_article():
 	documents = listdir(output_folder)
 	if not path.isdir(write_folder):
 		mkdir(write_folder)
+	
+	exts = [path.splitext(document)[1] for document in documents]
 
-	# check file types
-	for document in documents:
-		name, ext = path.splitext(document)
-		document_path = path.join(output_folder,document)
-		if ext == '.pdf':
-			pdf2graphs.extract(document_path, write=write_folder)
+	if '.tex' in exts:
+		document = documents[exts.index('.tex')]
+		
+		# parse tex file, retrieve source image filenames
+		images = pdf2graphs.parse_tex(path.join(output_folder,document))
+	
+		# unable to read file
+		if not images:
+			arxiv_reader.skipped.append(arxiv_reader.article)
+			continue
 
-		elif ext == '.tex':
-			# parse tex file, retrieve source image filenames
-			images = pdf2graphs.parse_tex(document_path)
-			
-			# unable to read file
-			if not images:
-				arxiv_reader.skipped.append(document)
-				continue
+		for image in images:
+			if type(image) is dict:
+				info = open(path.join(write_folder,'info.txt'), 'w+')
+				info.write(json.dumps(image))
+				info.close()
+		
+			elif image[0] in documents:
+				copyfile(path.join(output_folder,image[0]), path.join(write_folder,image[0]))
+				image_name, _ = path.splitext(image[0])
+				if len(image[1]) > 0:
+					tag_file = open(path.join(write_folder, "%s.tag" % image_name),'w+')
+					for tag in image[1]:
+						tag_file.write("%s\n" % tag)
 
-			for image in images:
-				if type(image) is dict:
-					if len(images) > 1:
-						info = open(path.join(write_folder,'info.txt'), 'w+')
-						info.write(json.dumps(image))
-						info.close()
-				
-				elif image[0] in documents:
-					copyfile(path.join(output_folder,image[0]), path.join(write_folder,image[0]))
-					image_name, _ = path.splitext(image[0])
-					if len(image[1]) > 0:
-						tag_file = open(path.join(write_folder, "%s.tag" % image_name),'w+')
-						for tag in image[1]:
-							tag_file.write("%s\n" % tag)
+					tag_file.close()
 
-						tag_file.close()
+	elif '.pdf' in exts:
+		document = documents[exts.index('.pdf')]
+		pdf2graphs.extract(path.join(output_folder,document),write=write_folder)
 
-		elif ext not in ['.eps','.ps','.jpg','.png','.sty']:
-			print("unknown type %s" % document)
-
-	arxiv_reader.write()
+	written = listdir(write_folder)
+	if not (len(written) == 1 and 'info.txt' in written):
+		arxiv_reader.write()
 
 arxiv_reader.close()
 

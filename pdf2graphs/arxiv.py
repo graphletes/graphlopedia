@@ -127,6 +127,12 @@ class helper:
 			print("closing arXiv helper")
 			for name in self.skipped:
 				print(name)
+		
+		log = open('skipped.log','w+')
+		for name in self.skipped:
+			log.write('%s\n' % name)
+		
+		log.close()
 
 		if os.path.isdir(self.temp_path):
 			shutil.rmtree(self.temp_path)
