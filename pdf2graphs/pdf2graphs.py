@@ -140,6 +140,51 @@ def extract_images(page,lines,eps_objects,write='.',image_type='png'):
 				batcmd2 = "convert %s/%s.eps %s/%s.%s" % (read,image_name,write,image_name,image_type)
 				result2 = subprocess.check_output(batcmd2, shell=True)
 
+
+def get_filename(line):
+	if "\\includegraphics" in line:
+		search = re.search("includegraphics(\[.*\])?{([\w\.\-]+)}", line)
+		if search:
+			return search.group(2)
+
+	elif "\\psfig" in line:
+		search = re.search("psfig{(fi(gure|le)=)?([\w\.\-]+)(,[^=]+=[^=]+)*}", line)
+		if search:
+			return search.group(3)
+
+	elif "\\epsfile" in line:
+		search = re.search("epsffile{([\w\.\-]+)}", line)
+		if search:
+			return search.group(1)
+
+	elif "\\epsfig" in line:
+		search = re.search("epsfig{(fi(gure|le)=)?([\w\.\-]+)(,[^=]+=[^=]+)*}", line)
+		if search:
+			return search.group(3)
+
+	elif "\\plotone" in line:
+		search = re.search("plotone{([\w\.\-]+)}", line)
+		if search:
+			return search.group(1)
+
+	elif "\\epsfbox" in line:
+		search = re.search("epsfbox{([\w\.\-]+)}", line)
+		if search:
+			return search.group(1)
+
+	elif "\\plotfiddle" in line:
+		search = re.search("plotfiddle{([\w\.\-]+)}", line)
+		if search:
+			return search.group(1)
+
+	elif "\\plottwo" in line:
+		search = re.search("plottwo{([\w\.\-]+)}{([\w\.\-]+)}", line)
+		if search:
+			return search.groups()
+
+	return None
+
+
 def parse_tex(filename):
 	# parse tex file
 	try:
@@ -148,148 +193,117 @@ def parse_tex(filename):
 		tex_file.close()
 	except UnicodeDecodeError:
 		print("unable to parse %s" % filename)
-		return None
+		return None, None
+
+	# remove comment lines
+	#lines = [line if not line.startswith('%') for line in lines]
 
 	images = list()
-	info = dict()
+	figures = list()
+	fig = list()
+	eat_fig = False
 
-	# while next_line
-	i = 0
-	while i < len(lines):
-		if lines[i].startswith('%'):
-			# line is a comment
-			pass
+	# get figure groups and lone images
+	for line in lines:
+		if not eat_fig and "begin{figure}" in line:
+			eat_fig = True
+		
+		elif eat_fig:
+			if "end{figure}" in line:
+				eat_fig = False
+				figures.append(fig)
+				fig = list()
 
-		elif "\\author{" in lines[i]:
-			search = re.search("author{(.*)}", lines[i])
-			if search:
-				if 'author' in info:
-					info['author'] += [author.strip() for author in search.group(1).split(',')]
-				else:
-					info['author'] = [author.strip() for author in search.group(1).split(',')]
 			else:
-				content = lines[i].split("\\author{")		
-				if len(content) > 1:
-					if 'author' in info:
-						info['author'] += [author.strip() for author in content[1].split(',')]
-					else:
-						info['author'] = [author.strip() for author in content[1].split(',')]
-				
-				while i < len(lines) and '}' not in lines[i]:
-					if 'author' in info:
-						info['author'] += [author.strip() for author in lines[i].split(',')]
-					else:
-						info['author'] = [author.strip() for author in lines[i].split(',')]
-					
-					i += 1
-				
-				if i < len(lines) and not lines[i].startswith('}'):
-					content = lines[i].split('}')[0]
-					if 'author' in info:
-						info['author'] += [author.strip() for author in content.split(',')]
-					else:
-						info['author'] = [author.strip() for author in content.split(',')]						
+				fig.append(line)
+		
+		else:
+			filename = get_filename(line)
+			images.append(filename)
 
-
-		elif "\\title" in lines[i]:
-			search = re.search("title{(.*)}", lines[i])
-			if search:
-				info['title'] = search.group(1)
-
-		elif "\\begin{figure}" in lines[i]:
-			tags = set()
-			filename = str()
-			i += 1
-			while i < len(lines) and "\\end{figure}" not in lines[i]:
-				if "\\caption" in lines[i]:
-					# get keywords from caption
-					caption = re.search("caption{(.*)}", lines[i])
-					if caption:
-						tokens = re.sub("[^\w']", ' ', caption.group(1)).split()
-						for token in tokens:
-							if len(token) > 3:
-								tags.add(token.lower())
-					else:
-						content = lines[i].split("caption{")
-						if len(content) > 1:
-							tokens = re.sub("[^\w']", ' ', content[1]).split()
-							for token in tokens:
-								if len(token) > 3:
-									tags.add(token.lower())
-
-						# multiline caption
-						while i < len(lines) and '}' not in lines[i]:
-							tokens = re.sub("[^\w']", ' ', lines[i]).split()
-							for token in tokens:
-								if len(token) > 3:
-									tags.add(token.lower())
-
-							i += 1
-
-						if i < len(lines):
-							content = lines[i].split('}')[0]
-							tokens = re.sub("[^\w']", ' ', content).split()
-							for token in tokens:
-								if len(token) > 3:
-									tags.add(token.lower())
-							
-							i += 1
+	# process figures
+	for figure in figures:
+		eat_cap = False
+		caps = list()
+		filenames = list() 
+		for line in figure:
+			if "caption" in line and line.endswith('}\n'):
+				caps.append(line)
 			
-				elif "\\includegraphics" in lines[i]:
-					# get filename
-					search = re.search("includegraphics(\[.*\])?{([\w\.\-]+)}", lines[i])
-					if search:
-						filename = search.group(2)		
+			elif not eat_cap and "caption" in line:
+				eat_cap = True
+				caps.append(line[:-1])
+
+			elif eat_cap and line.endswith('}\n'):
+				eat_cap = False
+				caps.append(line[:-1])
+
+			elif eat_cap:
+				caps.append(line[:-1])
+
+			else:
+				name = get_filename(line)
+				if name:
+					if type(name) is tuple:
+						filenames += name
+					else:
+						filenames.append(name)	
+
+		caption = ' '.join(caps)
+		for filename in filenames:
+			images.append((filename, caption))
+
+	authors = list()
+	auth = list()
+	eat_auth = False
+	# find information
+	for line in lines:
+		if "\\author" in line and line.endswith('}\n'):
+			authors.append(line[:-1])
+
+		elif not eat_auth and "\\author{" in line:
+			eat_auth = True
+			auth.append(line[:-1])
+
+		elif eat_auth and line.endswith('}\n'):
+			eat_auth = False
+			auth.append(line[:-1])
+			authors.append(' '.join(auth))
+			auth = list()
+
+		elif eat_auth:
+			auth.append(line[:-1])
+
+	title = list()
+	eat_tit = False
+	for line in lines:
+		if "\\title" in line and line.endswith('}\n'):
+			title = line[:-1]
+			break
+		
+		elif not eat_tit and "\\title" in line:
+			eat_tit = True
+			title.append(line[:-1])
+
+		elif eat_tit and line.endswith('}\n'):
+			eat_tit = False
+			title.append(line[:-1])
+			title = ' '.join(title)
+			break
+
+		elif eat_tit:
+			title.append(line[:-1])
 					
-				elif "\\psfig" in lines[i]:
-					# get filename
-					search = re.search("psfig{(file=)?([\w\.\-]+)(,[^=]+=[^=]+)*}", lines[i])
-					if search:
-						filename = search.group(2)
 
-				elif "\\epsffile" in lines[i]:
-					search = re.search("epsffile{([\w\.\-]+)}", lines[i])
-					if search:
-						filename = search.group(1)
+	info = dict()
+	if authors:
+		info['author'] = authors
 
-				elif "\\plotone" in lines[i]:
-					search = re.search("plotone{([\w\.\-]+)}", lines[i])
-					if search:
-						filename = search.group(1)
-				
-				i += 1
-				
-			if i < len(lines):
-				images.append((filename, tags))
+	if title:
+		info['title'] = title
 
-		elif "\\includegraphics" in lines[i]:
-			# get filename
-			search = re.search("includegraphics(\[.*\])?{([\w\.\-]+)}", lines[i])
-			if search:
-				images.append((search.group(2), list()))
-			
-		elif "\\psfig" in lines[i]:
-			# get filename
-			search = re.search("psfig{(file=)?([\w\.\-]+)(,[^=]+=[^=]+)*}", lines[i])
-			if search:
-				images.append((search.group(2), list()))
+	return images, info
 
-		elif "\\epsffile" in lines[i]:
-			search = re.search("epsffile{([\w\.\-]+)}", lines[i])
-			if search:
-				images.append((search.group(1), list()))
-
-		elif "\\plotone" in lines[i]:
-			search = re.search("plotone{([\w\.\-]+)}", lines[i])
-			if search:
-				images.append((search.group(1), list()))
-
-		i += 1
-
-	if info:
-		images.append(info)	
-
-	return images 
 
 def extract(filename,write='.',image_type='png'):
 	if filename.endswith('.pdf'):

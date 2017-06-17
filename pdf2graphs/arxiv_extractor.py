@@ -29,28 +29,37 @@ while arxiv_reader.next_article():
 		document = documents[exts.index('.tex')]
 		
 		# parse tex file, retrieve source image filenames
-		images = pdf2graphs.parse_tex(path.join(output_folder,document))
-	
+		images, info = pdf2graphs.parse_tex(path.join(output_folder,document))
+		if info:
+			info_file = open(path.join(write_folder,'info.json'), 'w+')
+			info_file.write(json.dumps(info))
+			info_file.close()
+				
+
 		# unable to read file
 		if not images:
 			arxiv_reader.skipped.append(arxiv_reader.article)
 			continue
 
 		for image in images:
-			if type(image) is dict:
-				info = open(path.join(write_folder,'info.txt'), 'w+')
-				info.write(json.dumps(image))
-				info.close()
-		
-			elif image[0] in documents:
-				copyfile(path.join(output_folder,image[0]), path.join(write_folder,image[0]))
-				image_name, _ = path.splitext(image[0])
-				if len(image[1]) > 0:
-					tag_file = open(path.join(write_folder, "%s.tag" % image_name),'w+')
-					for tag in image[1]:
-						tag_file.write("%s\n" % tag)
+			try:
+				if type(image) is str:
+					copyfile(path.join(output_folder,image), path.join(write_folder,image))
 
-					tag_file.close()
+				elif type(image) is tuple:
+					copyfile(path.join(output_folder,image[0]), path.join(write_folder,image[0]))
+					if image[1]:
+						image_name, _ = path.splitext(image[0])
+						tag_file = open(path.join(write_folder, "%s.txt" % image_name),'w+')
+						tag_file.write(image[1])
+						tag_file.close()
+
+			except FileNotFoundError:
+				# file not included in tar for some reason
+				if type(image) is str:
+					print("%s not found" % image)
+				elif type(image) is tuple:
+					print("%s not found" % image[0])
 
 	elif '.pdf' in exts:
 		document = documents[exts.index('.pdf')]
